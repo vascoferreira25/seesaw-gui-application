@@ -1,5 +1,5 @@
 (defproject seesaw-gui-application "0.1.0-SNAPSHOT"
-  :description "A simple GUI made with Clojure and Seesaw".
+  :description "A simple GUI made with Clojure and Seesaw."
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
