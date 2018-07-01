@@ -1,4 +1,4 @@
-# seesaw-gui-application
+# Simple GUI made with Clojure and Seesaw
 
 A simple GUI made with Clojure and Seesaw.
 
@@ -30,7 +30,7 @@ lein new app my-gui-project
 3. Create a project in Netbeans and create a new GUI, for example `JFrame` and add the widgets you need. Avoid using `AWT` widgets, at least for me it gives errors.
 4. For each component (button, progress bar, label, tree, etc.) that you will want to use, make sure to always insert a name (in its properties). For example, a textField may have as a name: `first-name`.
 5. Copy the GUI `MainWindow.java` file and any images to your Clojure `my-gui-project/src/my_gui_project/`.
-6. Edit the `MainWindow.java` and at the top, replace whatever `package xxxxx;` with: `package my_gui_project;`. Note that this is the name of the folder inside `/src/` folder. If you insert any image into the GUI, make sure to change the java file later and change the image path to `./image.png`.
+6. Edit the `MainWindow.java` and at the top, replace whatever `package xxxxx;` with: `package my_gui_project;`. Note that this is the name of the folder inside `/src/` folder. If you insert any image into the GUI, make sure to change the image path to `./image.png`.
 7. Have a look at `core.clj` file and try to do your own GUI.
 
 ## Usage
