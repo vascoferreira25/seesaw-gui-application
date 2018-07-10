@@ -7,10 +7,10 @@
                                         ;        Window-Builder binding       ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; This is the interesting part. Note that in MyPanel.java, the widgets we're
-;; interested in have their name set with setName().
+;;; This is the interesting part. Note that in `MainWindow.java`, the widgets we're
+;;; interested in have their name set with `setName()`.
 (defn identify
-  "Given a root widget, find all the named widgets and set their Seesaw :id
+  "Given a `root` widget, find all the named widgets and set their Seesaw :id
    so they can play nicely with select and everything."
   [root]
   (doseq [w (select root [:*])]
@@ -22,13 +22,13 @@
                                         ;            Initial Values           ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Define a variable to change the values inside a combobox
+;;; Define a variable to change the values inside a combobox.
 (def gender ["Male", "Female", "Other"])
 
-;; Define a state to change after doing something
+;;; Define a state to change after doing something.
 (def progress (atom 100))
 
-;; Set the default values to each component with name `:name`
+;;; Set the default values to each component with name `:name`.
 (def defaults
   {:first-name "Laura"
    :last-name "Palmer"
@@ -43,23 +43,27 @@
 (declare submit-form simulate-send-info)
 
 (defn submit-form
-  "Simulate a send info functionality"
+  "Simulate a send info functionality."
   [form button widget]
-  (reset! progress 0)
-  (text! (select form button) "Sending...")
-  (future (simulate-send-info form button widget)))
+  ;; Check if button is enabled.
+  (if (config (select form button) :enabled?)
+    (do
+      (reset! progress 0)
+      (text! (select form button) "Sending...")
+      (config! (select form button) :enabled? false)
+      (future (simulate-send-info form button widget)))))
 
 (defn simulate-send-info
-  "Take some time to send info. Update progress over time."
+  "Take some time to send info and update progress over time."
   [form button widget]
   (println "Sending info")
   (while (<= @progress 100)
     (do
-      (swap! progress inc) ;; Update progress
-      (value! (select form widget) @progress) ;; Show progress on progress-bar
-      (Thread/sleep 100) ;; Wait some time
-      ))
-  (text! (select form button) "Submit") ;; Change text on button to allow to submit again
+      (swap! progress inc) ; Update progress.
+      (value! (select form widget) @progress) ; Show progress on progress-bar.
+      (Thread/sleep 50))) ; Wait some time.
+  (config! (select form button) :enabled? true) ; Re-enable the button.
+  (text! (select form button) "Submit")
   (alert "Successfuly submited.")
   (println "Done")
   (println (str "Here is the data: " (value form))))
@@ -68,29 +72,28 @@
                                         ;            Initialization           ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; A helper to create an instance of the form, annotate it for Seesaw and do
-;; some other initialization.
+;;; A helper to create an instance of the form, annotate it for Seesaw and do
+;;; some other initialization.
 (defn my-form
   []
   (let [form (identify (seesaw_gui_application.MainWindow.))]
-    ;; initialize the state combobox
+    ;; Initialize the state combobox.
     (config! (select form [:#gender]) :model gender)
 
-    ;; Events - a function that should be run from the start
-    ;; (future (auto-count form [:#progress-bar]))
+    ;; Events - a function that should be run from the start.
+    ;; For example: `(future (auto-count form [:#progress-bar]))`.
 
-    ;; Button binding
+    ;; Button binding.
     (listen
-     ;; If button clicked execute function
+     ;; If button clicked execute function.
      (select form [:#submit-button]) :mouse-clicked
-     (fn [e]
-       (submit-form form [:#submit-button] [:#progress-bar])))
+     (fn [e] (submit-form form [:#submit-button] [:#progress-bar])))
     form))
 
-;; Now we just create the panel, initialize it to the defaults above with
-;; seesaw.core/value! and show it in a dialog. Note how, besides setting the
-;; names of the widgets, the code in MyForm.java is strictly for layout. All
-;; behavior, etc is done in Clojure.
+;;; Now we just create the panel, initialize it to the defaults above with
+;;; `seesaw.core/value!` and show it in a dialog. Note how, besides setting the
+;;; names of the widgets, the code in `MainWindow.java` is strictly for layout. All
+;;; behavior, etc is done in Clojure.
 (defn -main [& args]
   (invoke-later
    (let [form  (value! (my-form) defaults)
