@@ -73,7 +73,7 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("GUI: Netbeans window-builder");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("./clojure-logo-120b.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("clojure-logo-120b.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
